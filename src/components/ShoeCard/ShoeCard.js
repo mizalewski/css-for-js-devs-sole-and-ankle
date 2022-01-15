@@ -37,12 +37,8 @@ const ShoeCard = ({
         <ImageWrapper>
           <Image alt="" src={imageSrc}/>
         </ImageWrapper>
-        {(variant === 'on-sale' || variant === 'new-release') && (
-          variant === 'on-sale' ?
-            <SaleBadge>Sale</SaleBadge>
-            :
-            <NewBadge>Just released!</NewBadge>
-        )}
+        {variant === 'on-sale' && <SaleBadge>Sale</SaleBadge>}
+        {variant === 'new-release' && <NewBadge>Just released!</NewBadge>}
         <Spacer size={12}/>
         <Row>
           <Name>{name}</Name>
