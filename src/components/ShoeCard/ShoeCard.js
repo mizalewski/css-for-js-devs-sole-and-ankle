@@ -58,11 +58,12 @@ const ShoeCard = ({
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+  min-width: 270px;
+  flex: 1 0 375px;
 `;
 
 const Wrapper = styled.article`
   position: relative;
-  width: 370px;
 `;
 
 const ImageWrapper = styled.div`
