@@ -1,20 +1,19 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from 'react'
+import styled from 'styled-components/macro'
 
-import { COLORS, WEIGHTS } from '../../constants';
-import { formatPrice, pluralize, isNewShoe } from '../../utils';
-import Spacer from '../Spacer';
-import {css} from 'styled-components'
+import {COLORS, WEIGHTS} from '../../constants'
+import {formatPrice, pluralize, isNewShoe} from '../../utils'
+import Spacer from '../Spacer'
 
 const ShoeCard = ({
-  slug,
-  name,
-  imageSrc,
-  price,
-  salePrice,
-  releaseDate,
-  numOfColors,
-}) => {
+                    slug,
+                    name,
+                    imageSrc,
+                    price,
+                    salePrice,
+                    releaseDate,
+                    numOfColors,
+                  }) => {
   // There are 3 variants possible, based on the props:
   //   - new-release
   //   - on-sale
@@ -36,15 +35,24 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Image alt="" src={imageSrc} />
+          <Image alt="" src={imageSrc}/>
         </ImageWrapper>
-        {variant !== 'default' && (
-          variant === 'on-sale' ? <Badge variant={variant}>Sale</Badge> : <Badge variant={variant}>Just released!</Badge>
+        {(variant === 'on-sale' || variant === 'new-release') && (
+          variant === 'on-sale' ?
+            <SaleBadge>Sale</SaleBadge>
+            :
+            <NewBadge>Just released!</NewBadge>
         )}
-        <Spacer size={12} />
+        <Spacer size={12}/>
         <Row>
           <Name>{name}</Name>
-          <Price variant={variant}>{formatPrice(price)}</Price>
+          <Price
+            style={{
+              '--text-decoration':
+                variant === 'on-sale' ? 'line-through' : undefined,
+              '--color':
+                variant === 'on-sale' ? COLORS.gray[700] : undefined
+            }}>{formatPrice(price)}</Price>
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
@@ -52,65 +60,74 @@ const ShoeCard = ({
         </Row>
       </Wrapper>
     </Link>
-  );
-};
+  )
+}
 
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
   min-width: 270px;
   flex: 1 0 375px;
-`;
+`
 
 const Wrapper = styled.article`
   position: relative;
-`;
+`
 
 const ImageWrapper = styled.div`
   position: relative;
-`;
+`
 
 const Image = styled.img`
   width: 100%;
   border-radius: 16px 16px 4px 4px;
-`;
+`
 
 const Row = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 1rem;
-`;
+`
 
 const Name = styled.h3`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.gray[900]};
-`;
+`
 
 const Price = styled.span`
-  ${props => props.variant === 'on-sale' && css`text-decoration: line-through;`}
-`;
+  text-decoration: var(--text-decoration);
+  color: var(--color);
+`
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
-`;
+`
 
 const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
-`;
+`
 
 const Badge = styled.div`
   display: flex;
   position: absolute;
   top: 12px;
   right: -4px;
-  
+
   align-items: center;
   height: 32px;
   padding: 0 10px;
-  
-  color: ${COLORS.white};
-  background-color: ${props => props.variant === 'on-sale' ? COLORS.primary : COLORS.secondary};
-`;
 
-export default ShoeCard;
+  color: ${COLORS.white};
+}
+`
+
+const NewBadge = styled(Badge)`
+  background-color: ${COLORS.secondary};
+`
+
+const SaleBadge = styled(Badge)`
+  background-color: ${COLORS.primary};
+`
+
+export default ShoeCard
